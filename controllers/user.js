@@ -7,7 +7,6 @@ exports.postSignup = async (req,res,next) => {
         const existingUser = await User.findOne({ where: { email: email } });
         if (existingUser) {
             return res.status(400).json({ error: 'Email already exists' });
-            alert('The email address you entered is already in use.')
         }
         const newUser = await User.create({
             name:name,
@@ -33,7 +32,7 @@ exports.getLogin = async(req, res, next) => {
 
         const existingPassword = user.password;
         if(existingPassword !== password) {
-            return res.status(401).json({ message: 'Incorrect password' });
+            return res.status(401).json({ message: 'User not authorized' });
         }
         res.status(200).json({ message: 'Login successfull' });
      } catch(err) {

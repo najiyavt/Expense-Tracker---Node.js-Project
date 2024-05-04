@@ -11,19 +11,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await axios.get(`http://localhost:8000/user/login/${email}/${password}`);
             console.log(response);
             if (response.status === 200) {
-                loginMsg.textContent = response.data.message;
-            } else {
-                if (response.status === 401) {
-                    loginMsg.textContent = 'Incorrect password';
-                } else if (response.status === 404) {
-                    loginMsg.textContent = 'User not found';
-                } else {
-                    loginMsg.textContent = 'An error occurred. Please try again.';
-                }
+                loginMsg.textContent = response.data.message; 
             }
+            alert('User login successfull')
         } catch (error) {
             console.error( error);
-            loginMsg.textContent = 'An error occurred. Please try again.';
+            if (error.response && error.response.status === 404) {
+                loginMsg.textContent = 'Invalid email. Please try again.';
+            } else if (error.response && error.response.status === 401) {
+                loginMsg.textContent = 'User not authorized.';
+            } else {
+                loginMsg.textContent = 'An error occurred. Please try again.';
+            }
+            alert('An error occurred. Please try again.');
         }
     });
 });
