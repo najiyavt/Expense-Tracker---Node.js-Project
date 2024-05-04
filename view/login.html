@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form onsubmit="submitForm(event)">
+    <form id="loginForm" onsubmit="submitForm(event)">
         <label for="email">Enter your email:</label>
         <input type="email" name="email" id="email">
 
@@ -19,5 +19,8 @@
     
     <p>New User ?<a href="signup.html"> - Sign up Now</a></p>
     <div id="loginMsg"></div>
+
+    <script src="login.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 </html>

@@ -21,3 +21,23 @@ exports.postSignup = async (req,res,next) => {
         res.status(500).json({ error: 'Signup failed' })
     };
 }
+
+exports.getLogin = async(req, res, next) => {
+    try{
+        const  { email , password } = req.params;
+
+        const user = await User.findOne({where:{email}});
+        if(!user){
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        const existingPassword = user.password;
+        if(existingPassword !== password) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+        res.status(200).json({ message: 'Login successfull' });
+     } catch(err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal server error' })
+    };
+}
