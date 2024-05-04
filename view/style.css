@@ -21,33 +21,39 @@ label {
     display: block;
     margin-bottom: 5px;
 }
-input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
+input{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}    
 
-    button {
-        width: 100px;
-        padding: 10px;
-        align-content: center;
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        color: #fff;
-        cursor: pointer;
-    }
+button {
+    width: 100px;
+    padding: 10px;
+    align-content: center;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
 
-    button:hover {
-        background-color: #0056b3;
-    }    
-    div{
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    }
+button:hover {
+    background-color: #0056b3;
+}    
+div{
+text-align: center;
+color: red;
+font-weight: bold;
+}
+select{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

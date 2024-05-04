@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Expense = require('../models/expense');
 const bcrypt = require('bcrypt');
 
 exports.postSignup = async (req,res,next) => {
@@ -27,6 +28,7 @@ exports.postSignup = async (req,res,next) => {
 }
 
 exports.getLogin = async(req, res, next) => {
+
     try{
         const  { email , password } = req.params;
 
@@ -36,8 +38,7 @@ exports.getLogin = async(req, res, next) => {
         }
 
         const existingPassword = user.password;
-
-        const comparedPassword = bcrypt.compare(password,existingPassword)
+        const comparedPassword = await bcrypt.compare(password,existingPassword)
             
         if(comparedPassword){
             res.status(200).json({  message: 'User Logged in successfull' });
@@ -49,4 +50,42 @@ exports.getLogin = async(req, res, next) => {
         console.log(err);
         res.status(500).json({ message: 'Internal server error' })
     };
+}
+
+exports.getExpense = async(req,res) => {
+    try{
+       const expense =await Expense.findAll();
+       res.status(200).json(expense);
+    }
+    catch(error){
+        console.log(err);
+        res.status(500).json({ message: 'Failed to fetch expense ' })
+    }
+}
+
+exports.postExpense = async(req,res) => {
+    try{
+        const { amount , description , category } = req.body;
+        const expense = await Expense.create(amount , description , category);
+        res.status(201).json(expense);
+    }
+    catch(error){
+        console.log(err);
+        res.status(500).json({ message: 'Failed to create expense' })
+    }
+}
+
+exports.deleteExpense = async(req, res) => {
+    try{
+        const id = req.params.id;
+        const expense = await Expense.findByPk(id);
+        if(!expense){
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        await expense.destroy();
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'Failed to create expense' })
+    }
 }
