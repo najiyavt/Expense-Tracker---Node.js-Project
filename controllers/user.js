@@ -15,12 +15,6 @@ exports.postSignup = async (req,res,next) => {
         const newUser = await User.create({ name, email, password: hashedPassword });
         res.status(201).json(newUser);
     
-
-    // bcrypt.hash(password,10,async(err,hash)=>{
-    //     console.log(err);
-    //     const newUser = await User.create({ name, email, password:hash});
-    //     res.status(201).json(newUser);
-    // })
     }catch(err) {
         console.log(err);
         res.status(500).json({ error: 'Server error' })
@@ -29,7 +23,7 @@ exports.postSignup = async (req,res,next) => {
 
 exports.getLogin = async(req, res, next) => {
 
-    try{
+     try{
         const  { email , password } = req.params;
 
         const user = await User.findOne({where:{email}});
@@ -52,40 +46,38 @@ exports.getLogin = async(req, res, next) => {
     };
 }
 
-exports.getExpense = async(req,res) => {
-    try{
-       const expense =await Expense.findAll();
-       res.status(200).json(expense);
-    }
-    catch(error){
-        console.log(err);
-        res.status(500).json({ message: 'Failed to fetch expense ' })
+exports.getExpense = async (req, res) => {
+    try {
+        const expense = await Expense.findAll();
+        res.status(200).json(expense);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Failed to fetch expenses' });
     }
 }
 
-exports.postExpense = async(req,res) => {
-    try{
-        const { amount , description , category } = req.body;
-        const expense = await Expense.create(amount , description , category);
+exports.postExpense = async (req, res) => {
+    try {
+        const { amount, description, category } = req.body;
+        const expense = await Expense.create({ amount, description, category });
         res.status(201).json(expense);
-    }
-    catch(error){
-        console.log(err);
-        res.status(500).json({ message: 'Failed to create expense' })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Failed to create expense' });
     }
 }
 
-exports.deleteExpense = async(req, res) => {
-    try{
+exports.deleteExpense = async (req, res) => {
+    try {
         const id = req.params.id;
         const expense = await Expense.findByPk(id);
-        if(!expense){
+        if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
         await expense.destroy();
-    }
-    catch(error){
+        res.status(200).end();
+    } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Failed to create expense' })
+        res.status(500).json({ message: 'Failed to delete expense' });
     }
 }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form onsubmit="submitForm(event)">
+    <form id="loginForm" onsubmit="submitForm(event)">
         <label for="amount">Enter Expense : </label>
         <input type="number" name="amount" id="amount">
 
@@ -16,13 +16,14 @@
 
         <label for="category">Enter Category</label>
         <select id="category" name="category">
-            <option value="food">Food</option>
+            <option value="choose">Choose..</option>
             <option value="petrol">Petrol</option>
-            <option value="salary">Salary</option>
+            <option value="food">Food</option>
             <option value="rent">Rent</option>
+            <option value="more">More..</option>
         </select>
 
-        <button type="submit">Add Expense</button>
+        <button type="submit">Add Expense</button><br><br>
     </form>
 
     <ul id="expenseList"></ul>

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(response);
             if (response.status === 200) {
                 loginMsg.textContent = response.data.message; 
+                window.location.href='expense.html'
             }
             alert('User login successfull')
         } catch (error) {
