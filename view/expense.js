@@ -32,18 +32,17 @@ document.addEventListener('DOMContentLoaded', async ()=> {
 async function displayExpenses(expense) {
     const expenseList = document.getElementById('expenseList');
     const li = document.createElement('li');
-    li.innerHTML = `${expense.amount} - ${expense.description} - ${expense.category} `;
+    li.innerHTML = `${expense.amount} - ${expense.description} - ${expense.category} - `;
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'DELETE';
-    deleteBtn.setAttribute('data-id', expense.id);
+    deleteBtn.classList='deleteBtn';
     li.appendChild(deleteBtn);
     expenseList.appendChild(li);
 
     deleteBtn.addEventListener('click', async () => {
         try {
-            const id = deleteBtn.getAttribute("data-id");
-            await axios.delete(`http://localhost:8000/user/expense/${id}`);
+            await axios.delete(`http://localhost:8000/user/expense/${expense.id}`);
             li.parentElement.removeChild(li);
             alert('Expense deleted successfully');
         } catch (error) {

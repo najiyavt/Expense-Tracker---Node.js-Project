@@ -44,6 +44,22 @@ button {
 button:hover {
     background-color: #0056b3;
 }    
+
+.deleteBtn{
+    background-color: red;
+    border-radius: 0;
+    padding: 5px;
+    width: 70px;
+}
+
+.deleteBtn:hover {
+    background-color: #e24436;
+}
+
+li{
+    margin-bottom: 10px;
+}
+
 div{
 text-align: center;
 color: red;
