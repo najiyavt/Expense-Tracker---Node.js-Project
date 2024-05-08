@@ -4,12 +4,18 @@ const bodyParser = require('body-parser');
 
 const sequelize = require('./util/databse');
 const routes = require('./routes/admin');
+const User = require('./models/user');
+const Expense = require('./models/expense');
 
 const app = express();
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/user' , routes);
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
 sequelize
    .sync()
    .then(result => {

@@ -4,30 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Expenses</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <form id="loginForm" onsubmit="submitForm(event)">
-        <label for="amount">Enter Expense : </label>
-        <input type="number" name="amount" id="amount">
+        <label for="amount">Enter expense amount: </label>
+        <input type="number" name="amount" id="amount" placeholder="Enter expense amount..">
 
-        <label for="description">Enter the Description : </label>
-        <input type="text" name="description" id="description">
+        <label for="description">Enter Description : </label>
+        <input type="text" name="description" id="description" placeholder="Enter Description..">
 
-        <label for="category">Enter Category</label>
+        <label for="category">Choose a Category</label>
         <select id="category" name="category">
             <option value="choose">Choose..</option>
             <option value="fuel">Fuel</option>
             <option value="food">Food</option>
             <option value="rent">Rent</option>
+            <option value="rent">Entertainment</option>
+            <option value="travel">Travel</option>
             <option value="more">More..</option>
-        </select>
+        </select><br>
 
         <button type="submit">Add Expense</button><br><br>
     </form>
 
     <ul id="expenseList"></ul>
-
+    <p >
+        <a href="../login/login.html">Login</a> |  
+        <a href="../signup/signup.html">Signup</a>
+    </p>
+    
     <script src="expense.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 

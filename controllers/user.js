@@ -1,6 +1,6 @@
 const User = require('../models/user');
-const Expense = require('../models/expense');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.postSignup = async (req,res,next) => {
 
@@ -10,11 +10,10 @@ exports.postSignup = async (req,res,next) => {
         if (existingUser) {
             return res.status(400).json({ error: 'Email already exists' });
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const salt = 50;
+        const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = await User.create({ name, email, password: hashedPassword });
-        res.status(201).json(newUser);
-    
+        res.status(201).json({newUser,message:"Succesfully created user"});
     }catch(err) {
         console.log(err);
         res.status(500).json({ error: 'Server error' })
@@ -28,56 +27,23 @@ exports.getLogin = async(req, res, next) => {
 
         const user = await User.findOne({where:{email}});
         if(!user){
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ err: 'User not found' })
         }
 
         const existingPassword = user.password;
         const comparedPassword = await bcrypt.compare(password,existingPassword)
             
         if(comparedPassword){
-            res.status(200).json({  message: 'User Logged in successfull' });
+            res.status(200).json({success:true,  message: 'User Logged in successfull' , token:generateToken(user.id,user.name)});
         }else{
-            return res.status(401).json({ message: 'User not authorized' });
+            return res.status(401).json({success:false, message: 'User not authorized' });
         }
-         
      } catch(err) {
         console.log(err);
         res.status(500).json({ message: 'Internal server error' })
     };
 }
 
-exports.getExpense = async (req, res) => {
-    try {
-        const expense = await Expense.findAll();
-        res.status(200).json(expense);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Failed to fetch expenses' });
-    }
-}
-
-exports.postExpense = async (req, res) => {
-    try {
-        const { amount, description, category } = req.body;
-        const expense = await Expense.create({ amount, description, category });
-        res.status(201).json(expense);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Failed to create expense' });
-    }
-}
-
-exports.deleteExpense = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const expense = await Expense.findByPk(id);
-        if (!expense) {
-            return res.status(404).json({ error: 'Expense not found' });
-        }
-        await expense.destroy();
-        res.status(200).end();
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Failed to delete expense' });
-    }
+function generateToken(id,name){
+    return jwt.sign({userId:id , name: name} , '123456789');
 }
