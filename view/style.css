@@ -56,6 +56,19 @@ button:hover {
     background-color: #e24436;
 }
 
+#premium{
+    background-color: rgb(25, 190, 25);
+    cursor: pointer; 
+    position: relative; 
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#premium:hover {
+    background-color:rgb(15, 99, 15);
+} 
+
 li{
     margin-bottom: 10px;
 }

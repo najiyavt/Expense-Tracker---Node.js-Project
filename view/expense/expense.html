@@ -27,12 +27,16 @@
 
         <button type="submit">Add Expense</button><br><br>
     </form>
-
     <ul id="expenseList"></ul>
-    <p >
+    <p>
         <a href="../login/login.html">Login</a> |  
         <a href="../signup/signup.html">Signup</a>
     </p>
+    <button id="premium" >Buy Premium</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <h3 id="success"></h3>
+
+    
     
     <script src="expense.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
