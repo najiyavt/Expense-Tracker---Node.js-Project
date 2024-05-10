@@ -15,7 +15,8 @@ async function submitForm(event) {
         console.log(response.data);
         event.target.reset();
         alert('Expense added successfully');
-        displayExpenses(response.data);
+        console.log(response.data)
+        displayExpenses(response.data.expense);
     } catch (error) {
         console.log(error);
         alert('An error occurred. Please try again. ')
@@ -41,7 +42,7 @@ async function displayExpenses(expense) {
             await axios.delete(`http://localhost:8000/expense/${expense.id}` , {
                 headers : {"Authorization":token }
             });
-            expenseList.removeChild(li);
+            li.parentElement.removeChild(li);
             alert('Expense deleted successfully');
         } catch (error) {
             console.error('Deletion failed', error);
@@ -64,12 +65,11 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         ]);
 
         const expenses = expenseRes.data;
-        const premiumStatus = premiumStatusRes.data;
-        displayExpenses(premiumStatus)
+        // const premiumStatus = premiumStatusRes.data;
+        // displayExpenses(premiumStatus)
 
         console.log(expenses);
-        console.log(premiumStatus);
-
+        
         expenses.forEach(expense => {
             displayExpenses(expense);
         });
@@ -138,5 +138,19 @@ function displayPremiumStatus(isPremium){
         document.getElementById('success').innerHTML=' Premium User ';        
     }else{
         document.getElementById('success').innerHTML='not a premium user'
+    }
+}
+
+document.getElementById('leadrBoard').onclick = async function( event) {
+    try{
+        const response = await axios.get(`http://localhost:8000/premium/leaderBoard`);
+        const resData = response.data;
+        console.log(resData)
+        resData.forEach(res => {
+            console.log(res);
+        })
+    }catch(error){
+        console.log(error)
+
     }
 }
