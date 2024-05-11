@@ -17,6 +17,7 @@ exports.postExpense = async (req, res) => {
     try {
         const expense = await Expense.create({ amount, description, category, UserId: req.user.id });
         res.status(201).json({expense,success:true});
+        console.log(expense)
     } catch (error) {
         console.error('Error creating expense:', error);
         res.status(500).json({success:false, error: 'Failed to create expense' });

@@ -69,6 +69,22 @@ button:hover {
     background-color:rgb(15, 99, 15);
 } 
 
+#leaderButton{
+    background-color: rgb(199, 14, 44);
+    cursor: pointer; 
+    position: relative; 
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+}
+#leaderMessage{
+    bottom:20px
+}
+#leaderButton:hover {
+    background-color:rgb(69, 7, 33);
+} 
+
 li{
     margin-bottom: 10px;
 }

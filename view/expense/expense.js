@@ -12,10 +12,9 @@ async function submitForm(event) {
             expenseDetails, {
             headers:{ "Authorization":token }
         });
-        console.log(response.data);
+        console.log(response.data.expense);
         event.target.reset();
         alert('Expense added successfully');
-        console.log(response.data)
         displayExpenses(response.data.expense);
     } catch (error) {
         console.log(error);
@@ -55,18 +54,20 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     try {
         const token = localStorage.getItem('token');
      
-        const [expenseRes , premiumStatusRes] = await Promise.all([
-            await axios.get('http://localhost:8000/expense/getExpense' , {
-                headers:{"Authorization":token}
-            }),
-            await axios.get('http://localhost:8000/purchase/getStatus' , {
-                headers:{"Authorization":token}
-            })
-        ]);
+        // const [expenseRes , premiumStatusRes] = await Promise.all([
+        //     await axios.get('http://localhost:8000/expense/getExpense' , {
+        //         headers:{"Authorization":token}
+        //     }),
+        //     await axios.get('http://localhost:8000/purchase/getStatus' , {
+        //         headers:{"Authorization":token}
+        //     })
+        // ]);
 
+        const expenseRes = await axios.get('http://localhost:8000/expense/getExpense', {
+            headers:{"Authorization":token}
+        });
         const expenses = expenseRes.data;
-        // const premiumStatus = premiumStatusRes.data;
-        // displayExpenses(premiumStatus)
+
 
         console.log(expenses);
         
@@ -105,6 +106,7 @@ document.getElementById('premium').onclick = async function( event) {
             }catch(error){
                 console.error('Error while updating transaction status:', error);
                 alert('An error occurred while updating transaction status.');
+                displayPremiumStatus()
             }
         }
     };
@@ -115,11 +117,11 @@ document.getElementById('premium').onclick = async function( event) {
     rzp1.on('payment.failed' , async function (response) {
         try{
             console.log(response);
-            await axios.post('http://localhost:8000/purchase/updateOrderStatus' , {
-                order_id:options.order_id,
-            }, {
-            headers : { 'Authorization': token }
-            });
+            // await axios.post('http://localhost:8000/purchase/updateOrderStatus' , {
+            //     order_id:options.order_id,
+            // }, {
+            // headers : { 'Authorization': token }
+            // });
             alert('Payment failed. Order status has been updated.')
         }catch(error){
             console.log('Error updating order status:', error);
@@ -136,21 +138,23 @@ function displayPremiumStatus(isPremium){
     if(isPremium){
         document.getElementById('premium').style.display='none';
         document.getElementById('success').innerHTML=' Premium User ';        
-    }else{
-        document.getElementById('success').innerHTML='not a premium user'
     }
 }
 
-document.getElementById('leadrBoard').onclick = async function( event) {
+document.getElementById('leaderButton').onclick = async function( event) {
     try{
-        const response = await axios.get(`http://localhost:8000/premium/leaderBoard`);
-        const resData = response.data;
-        console.log(resData)
-        resData.forEach(res => {
-            console.log(res);
-        })
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`http://localhost:8000/premium/showLeaderBoard`,{
+                headers : { 'Authorization': token }
+            });
+            const resData = response.data;
+            console.log(resData)
+            const leaderBoard = document.getElementById('leaderBoard');
+            leaderBoard.innerHTML=''
+            resData.forEach(res => {
+                leaderBoard.innerHTML += `<li> Name :- ${res.name} Total expense - ${res.amount}`
+            })
     }catch(error){
         console.log(error)
-
     }
 }
