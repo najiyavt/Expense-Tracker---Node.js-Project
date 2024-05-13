@@ -103,3 +103,27 @@ select{
     border-radius: 4px;
     box-sizing: border-box;
 }
+#loginMsg {
+    color: red;
+    margin-top: 10px;
+}
+#forgotPasswrd {
+    background-color: transparent;
+    position: fixed;
+    border: none;
+    color: #3169ae;
+    text-decoration: underline;
+    transform: translateX(-50%);
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    bottom: 20px;
+    left: 50%;
+    align-items: center;
+}
+#forgotPasswrd:hover {
+    color: #0056b3;
+}
+#emailForm {
+    display: none;
+}

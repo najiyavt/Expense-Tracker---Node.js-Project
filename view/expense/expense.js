@@ -107,11 +107,11 @@ document.getElementById('premium').onclick = async function( event) {
     rzp1.on('payment.failed' , async function (response) {
         try{
             console.log(response);
-            // await axios.post('http://localhost:8000/purchase/updateOrderStatus' , {
-            //     order_id:options.order_id,
-            // }, {
-            // headers : { 'Authorization': token }
-            // });
+            await axios.post('http://localhost:8000/purchase/updateOrderStatus' , {
+                order_id:options.order_id,
+            }, {
+            headers : { 'Authorization': token }
+            });
             alert('Payment failed. Order status has been updated.')
         }catch(error){
             console.log('Error updating order status:', error);

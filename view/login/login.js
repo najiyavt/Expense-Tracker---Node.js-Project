@@ -10,16 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await axios.get(`http://localhost:8000/user/login/${email}/${password}` );
             console.log(response);
-            // if (response.status === 200) {
-               // loginMsg.textContent = response.data.message; 
                 localStorage.setItem('token' , response.data.token);
-                alert("Logged succesful");
+                alert("Logged succesfully");
                 window.location.href='../expense/expense.html';
-            //}
         } catch (error) {
             console.error( error);
-            //console.error( JSON.stringify(error.response.data.error));
-           // loginMsg.innerHTML='<div style="color:red">${error.response.data.error}</div>'
             if (error.response && error.response.status === 404) {
                 loginMsg.textContent = 'Invalid email. Please try again.';
             } else if (error.response && error.response.status === 401) {
@@ -31,3 +26,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+async function sendForm(){
+    document.getElementById('emailForm').style.display='block';
+}
+
+async function submitEmailForm(event){
+    event.preventDefault();
+    const email = document.getElementById('emailForgt').value;
+
+    try{
+        const response = await axios.post(`http://localhost:8000/password/forgotpassword` , {email:email});
+        console.log(response.data);
+        alert('Reset email sent successfully!');
+        document.getElementById('emailForm').style.display = 'none';
+        document.getElementById('emailForgt').value='';
+    }catch (error) {
+        console.error('Error sending reset email:', error);
+        alert('Failed to send reset email. Please try again.');
+    }
+}
