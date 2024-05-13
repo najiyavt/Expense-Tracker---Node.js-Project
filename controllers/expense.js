@@ -1,5 +1,5 @@
 const Expense = require('../models/expense');
-
+const User = require('../models/user')
 
 exports.getExpense = async (req, res) => {
     try {
@@ -16,8 +16,12 @@ exports.postExpense = async (req, res) => {
     
     try {
         const expense = await Expense.create({ amount, description, category, UserId: req.user.id });
-        res.status(201).json({expense,success:true});
-        console.log(expense)
+        const user = await User.findByPk(req.user.id);
+        const total = user.totalCost + parseInt(amount);
+        await user.update({ totalCost: total });
+        res.status(201).json({ expense, success: true });
+        console.log(total);
+        console.log(expense);
     } catch (error) {
         console.error('Error creating expense:', error);
         res.status(500).json({success:false, error: 'Failed to create expense' });
@@ -29,8 +33,16 @@ exports.deleteExpense = async (req, res) => {
     try {
         if(expenseId === undefined || expenseId === 0){
             return res.status(400).json({success:false})
+        } 
+        const currentExpense = await Expense.findByPk(expenseId);
+        if (!currentExpense) {
+            return res.status(404).json({ success: false, message: 'Expense not found' });
         }
-        const expense = await Expense.destroy({ where: { id: expenseId, UserId: req.user.id } });
+        await currentExpense.destroy();
+        
+        const user = await User.findByPk(req.user.id);
+        const total = user.totalCost - currentExpense.amount;
+        await user.update({ totalCost: total });
         
         res.status(200).json({success:true,message:"Deleted succesfully"});
     } catch (error) {

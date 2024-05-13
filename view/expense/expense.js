@@ -53,23 +53,13 @@ async function displayExpenses(expense) {
 document.addEventListener('DOMContentLoaded', async ()=> {
     try {
         const token = localStorage.getItem('token');
-     
-        // const [expenseRes , premiumStatusRes] = await Promise.all([
-        //     await axios.get('http://localhost:8000/expense/getExpense' , {
-        //         headers:{"Authorization":token}
-        //     }),
-        //     await axios.get('http://localhost:8000/purchase/getStatus' , {
-        //         headers:{"Authorization":token}
-        //     })
-        // ]);
 
         const expenseRes = await axios.get('http://localhost:8000/expense/getExpense', {
             headers:{"Authorization":token}
         });
         const expenses = expenseRes.data;
 
-
-        console.log(expenses);
+        console.log('expenses>>>>>>>>>>',expenses);
         
         expenses.forEach(expense => {
             displayExpenses(expense);
@@ -148,12 +138,15 @@ document.getElementById('leaderButton').onclick = async function( event) {
                 headers : { 'Authorization': token }
             });
             const resData = response.data;
-            console.log(resData)
+            console.log('resData>>>>>>>>>>>>>>>>' , resData)
             const leaderBoard = document.getElementById('leaderBoard');
             leaderBoard.innerHTML=''
-            resData.forEach(res => {
-                leaderBoard.innerHTML += `<li> Name :- ${res.name} Total expense - ${res.amount}`
+            resData.forEach(user => {
+                const li = document.createElement('li')
+                li.innerHTML += `Name - ${user.name} , Total expense - ${user.totalCost}`;
+                leaderBoard.appendChild(li)
             })
+            //document.getElementById('leaderMessage').style.display='block'
     }catch(error){
         console.log(error)
     }

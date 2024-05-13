@@ -78,8 +78,9 @@ button:hover {
     transform: translateX(-50%);
     
 }
-#leaderMessage{
-    bottom:20px
+h3{
+    /* //bottom:20px; */
+    display: none;
 }
 #leaderButton:hover {
     background-color:rgb(69, 7, 33);
