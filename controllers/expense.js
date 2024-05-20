@@ -33,8 +33,7 @@ exports.postExpense = async (req, res) => {
         await t.commit();
 
         res.status(201).json({ expense, success: true });
-        console.log('totalCost:', total);
-        console.log('expense:', expense);
+        
     } catch (error) {
         await t.rollback();
         console.error('Error creating expense:', error);

@@ -8,7 +8,7 @@ const sequelize = require('./util/databse');
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const purchaseRoutes = require('./routes/purchaseRoutes');
-const premiumRoutes = require('./routes/premiumRoutes');
+const leaderBoardRoutes = require('./routes/leaderboardRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 
 
@@ -16,6 +16,7 @@ const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
 const ForgotPasswordRequests = require('./models/ForgotPasswordRequests');
+const DownloadedFiles = require('./models/downloadedFiles')
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.use(bodyParser.json())
 app.use('/user' , userRoutes);
 app.use('/expense' , expenseRoutes);
 app.use('/purchase' , purchaseRoutes);
-app.use('/premium' , premiumRoutes);
+app.use('/premium' , leaderBoardRoutes);
 app.use('/password' , forgotPasswordRoutes);
 
 User.hasMany(Expense);
@@ -35,7 +36,11 @@ User.hasMany(Order);
 Order.belongsTo(User);
 
 User.hasMany(ForgotPasswordRequests);
-ForgotPasswordRequests.belongsTo(User)
+ForgotPasswordRequests.belongsTo(User);  
+
+User.hasMany(DownloadedFiles);
+DownloadedFiles.belongsTo(User);
+
 
 sequelize
    .sync()

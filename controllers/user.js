@@ -1,8 +1,49 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const UserServices = require('../services/userServices');
+const S3services = require('../services/S3services');
+const DownloadedFiles = require('../models/downloadedFiles');
+const sequelize = require('sequelize');
 
-exports.signup = async (req,res,next) => {
+exports.downloadExpense = async(req,res) => {
+    try{
+        const isPremiumUser = req.user.isPremiumUser;
+        if(isPremiumUser){
+            const expenses =  await UserServices.getExpense(req);
+    
+            const stringifiedExpenses = JSON.stringify(expenses);
+            
+            const filename = `Expense${req.user.id}/${new Date()}.txt`;
+            const fileURL = await S3services.uploadToS3(stringifiedExpenses , filename );
+           
+            await DownloadedFiles.create({url:fileURL.Location , userId:req.user.id})
+            
+            res.status(201).json({fileURL , success:true});
+        }else{
+            res.status(401).json({success:false , message: "Unauthorized : you are not a premium user"})
+        }
+    }catch(err){
+        console.log('Error fetching:',err)
+        res.status(500).json({fileURL: '' , error:'Failed to fetch',success:false ,err:err})
+    }
+}
+
+// exports.downloadRecords = async (req,res ) => {
+//     try{
+//         const isPremiumUser = req.user.isPremiumUser;
+//         if(isPremiumUser){
+//             const downloadRecoards = await DownloadedFiles.findAll({where: {userId:req.user.id}});
+//             console.log('downloadRecoards.................',downloadRecoards)
+//             res.status(401).json({success:false,message:"Unauthorized : you are not a premium user"});
+//         }
+//     }catch(err) {
+//         console.error('Error fetching:', err);
+//         res.status(500).json({ error: 'Failed to fetch' ,err:err});
+//     };
+// }
+
+exports.signup = async (req,res ) => {
 
     try{
         const { name, email, password } = req.body;
@@ -13,14 +54,14 @@ exports.signup = async (req,res,next) => {
         const salt = 10;
         const hashedPassword = await bcrypt.hash(password, salt); //blowfish 
         const newUser = await User.create({ name, email, password: hashedPassword });
-        res.status(201).json({newUser,message:"Succesfully created user"});
+        res.status(200).json({newUser,message:"Succesfully created user"});
     }catch(err) {
         console.log(err);
         res.status(500).json({ error: 'Server error' })
     };
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
     try {
         const { email, password } = req.params;
 
@@ -42,6 +83,7 @@ exports.login = async (req, res, next) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 function generateToken(id,name){
     return jwt.sign({userId:id , name: name} , 'secretkey');

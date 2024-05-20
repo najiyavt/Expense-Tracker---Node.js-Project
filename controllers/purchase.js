@@ -4,13 +4,13 @@ const Order = require('../models/order')
 exports.getStatus = async( req , res) => {
     try{
         const isPremiumUser = req.user.isPremiumUser;
-        res.status(200).json({status:isPremiumUser})
+        console.log('isPremiumUser>>>>>>>>',isPremiumUser)
+        res.status(200).json({status:isPremiumUser});
     }catch(error){
         console.error('Error in transaction status' , error);
         res.status(500).json({error:error,message:"An error encountering"})
     }
 }
-
 
 exports.premiumPurchase = async (req, res) => {
     try {
@@ -21,7 +21,7 @@ exports.premiumPurchase = async (req, res) => {
         const amount = 2500;
 
         const order = await rzp.orders.create({ amount, currency: 'INR' });
-
+        console.log('order>>>>>>>>>>>>>>>>>>>>>>>',order)
         await req.user.createOrder({ orderId: order.id, status: "PENDING" });
 
         return res.status(201).json({ order, key_id: rzp.key_id });
@@ -35,10 +35,11 @@ exports.updateOrderStatus= async ( req, res) => {
     try{
         const{ order_id } = req.body;
         const order = await Order.findOne({where:{orderId:order_id}});
+        
         await order.update({status: 'FAILED'});
         res.status(200).json({success:true,message:'Order status updated FAILED'})
     }catch(error){
-        console.log(error);
+        console.error('Error updating order status:', error);
         res.status(500).json({ message: 'Failed to update order status', error: error });
     }
 }
@@ -58,7 +59,7 @@ exports.updateTransactionStatus= async ( req, res) => {
         await Promise.all([updateOrderPromise,updateUserPromise]);
         res.status(202).json({success:true,message:"Transaction succesfull"})
     }catch(err){
-        console.log(err);
+        console.error('Error updating transaction status:', error);
         res.status(500).json({ error: err , message: "Something went wrong" });
     }
 }

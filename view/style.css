@@ -90,11 +90,11 @@ li{
     margin-bottom: 10px;
 }
 
-div{
+/* div{
 text-align: center;
 color: red;
 font-weight: bold;
-}
+} */
 select{
     width: 100%;
     padding: 8px;
@@ -126,4 +126,22 @@ select{
 }
 #emailForm {
     display: none;
+}
+
+#downloadBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px; 
+    padding: 5px 10px; 
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 3px; 
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#downloadBtn:hover {
+    background-color: #0d3d18;
 }
