@@ -17,9 +17,9 @@ exports.downloadExpense = async(req,res) => {
             const filename = `Expense${req.user.id}/${new Date()}.txt`;
             const fileURL = await S3services.uploadToS3(stringifiedExpenses , filename );
            
-            await DownloadedFiles.create({url:fileURL.Location , userId:req.user.id})
+            await DownloadedFiles.create({url:fileURL.Location , UserId:req.user.id})
             
-            res.status(201).json({fileURL , success:true});
+            res.status(200).json(fileURL);
         }else{
             res.status(401).json({success:false , message: "Unauthorized : you are not a premium user"})
         }
@@ -29,19 +29,20 @@ exports.downloadExpense = async(req,res) => {
     }
 }
 
-// exports.downloadRecords = async (req,res ) => {
-//     try{
-//         const isPremiumUser = req.user.isPremiumUser;
-//         if(isPremiumUser){
-//             const downloadRecoards = await DownloadedFiles.findAll({where: {userId:req.user.id}});
-//             console.log('downloadRecoards.................',downloadRecoards)
-//             res.status(401).json({success:false,message:"Unauthorized : you are not a premium user"});
-//         }
-//     }catch(err) {
-//         console.error('Error fetching:', err);
-//         res.status(500).json({ error: 'Failed to fetch' ,err:err});
-//     };
-// }
+exports.downloadRecords = async (req,res ) => {
+    try{
+        const isPremiumUser = req.user.isPremiumUser;
+        if(isPremiumUser){
+            const downloadRecoards = await DownloadedFiles.findAll({where: {userId:req.user.id}});
+            res.status(201).json(downloadRecoards)
+        }else{
+            res.status(401).json({ success: false, message: "Unauthorized : you are not a premium user" });
+        }
+    }catch(err) {
+        console.error('Error fetching:', err);
+        res.status(500).json({ error: 'Failed to fetch' ,err:err});
+    };
+}
 
 exports.signup = async (req,res ) => {
 

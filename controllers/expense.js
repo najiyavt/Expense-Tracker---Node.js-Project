@@ -3,9 +3,21 @@ const User = require('../models/user');
 const sequelize = require('../util/databse');
 
 exports.getExpense = async (req, res) => {
+    const { page = 1, limit = 5 } = req.query; // Get page and limit from query params, with defaults
+
     try {
-        const expenses = await Expense.findAll({ where: { UserId: req.user.id } });
-        res.status(200).json(expenses);
+        const expenses = await Expense.findAndCountAll({
+            where: { UserId: req.user.id },
+            limit: parseInt(limit), // Number of items per page
+            offset: (page - 1) * limit // Offset based on current page
+        });
+
+        res.status(200).json({
+            expenses: expenses.rows,
+            currentPage: page,
+            totalItems: expenses.count,
+            totalPages: Math.ceil(expenses.count / limit),
+        });
     } catch (error) {
         console.error('Error fetching expenses:', error);
         res.status(500).json({ error: 'Failed to fetch expenses' });
@@ -56,7 +68,9 @@ exports.deleteExpense = async (req, res) => {
         
         const user = await User.findByPk(req.user.id);
         const total = user.totalCost - currentExpense.amount;
-        await user.update({ totalCost: total } , { transaction:t });
+        await user.update({ 
+            totalCost: total } , { transaction:t 
+        });
         await t.commit();
         res.status(200).json({success:true,message:"Deleted succesfully"});
     } catch (error) {

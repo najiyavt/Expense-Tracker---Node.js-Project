@@ -1,108 +1,124 @@
+
 body {
-    display: flex;
-    flex-direction: column;
-   
-    justify-content: space-between;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+    color: #333;
 }
 
 form {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: #fff;
+    max-width: 500px;
+    margin: 20px auto;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-p{
+
+p {
     text-align: center;
-   
+    margin-top: 20px;
 }
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-input{
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}    
 
-button {
-    width: 100px;
-    padding: 10px;
-    align-content: center;
-    background-color: #007bff;
+#expHead {
+    text-align: center;
+    margin-top: 40px;
+}
+
+#expenseList {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+}
+
+#expenseList li {
+    background: #fff;
+    margin: 5px 0;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#premiumSection, #leaderboardSection, #downloadSection {
+    max-width: 500px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+#premium, #leaderButton, #downloadBtn {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 10px;
+    background-color: #28a745;
+    color: white;
     border: none;
-    border-radius: 4px;
-    color: #fff;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+#premium:hover, #leaderButton:hover, #downloadBtn:hover {
+    background-color: #218838;
+}
+
+#leaderBoard {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+}
+
+#leaderBoard li {
+    background: #fff;
+    margin: 5px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#recordsDiv {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0;
+    list-style: none;
+}
+
+#paginateExpense {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#paginateExpense button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+#paginateExpense button:hover {
     background-color: #0056b3;
-}    
-
-.deleteBtn{
-    background-color: red;
-    border-radius: 0;
-    padding: 5px;
-    width: 70px;
 }
 
-.deleteBtn:hover {
-    background-color: #e24436;
+#paginateExpense button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
-#premium{
-    background-color: rgb(25, 190, 25);
-    cursor: pointer; 
-    position: relative; 
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#premium:hover {
-    background-color:rgb(15, 99, 15);
-} 
-
-#leaderButton{
-    background-color: rgb(199, 14, 44);
-    cursor: pointer; 
-    position: relative; 
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    
-}
-h3{
-    /* //bottom:20px; */
-    display: none;
-}
-#leaderButton:hover {
-    background-color:rgb(69, 7, 33);
-} 
-
-li{
-    margin-bottom: 10px;
-}
-
-/* div{
-text-align: center;
-color: red;
-font-weight: bold;
-} */
-select{
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
 #loginMsg {
     color: red;
     margin-top: 10px;
@@ -123,25 +139,4 @@ select{
 }
 #forgotPasswrd:hover {
     color: #0056b3;
-}
-#emailForm {
-    display: none;
-}
-
-#downloadBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px; 
-    padding: 5px 10px; 
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 3px; 
-    text-align: center;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-#downloadBtn:hover {
-    background-color: #0d3d18;
 }

@@ -16,8 +16,7 @@ exports.uploadToS3 =async (data,filename) => {
             Bucket:BUCKET_NAME,
             Key:filename,
             Body: data,
-            ACL: 'public-read',
-            ContentType: 'text/plain'
+            ACL: 'public-read'
         }
         const response = await s3bucket.upload(params).promise();
         console.log('File uploaded successfully at', response.Location);
