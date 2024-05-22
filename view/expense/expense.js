@@ -60,11 +60,11 @@ async function fetchExpenses(page=1){
         const response = await axios.get(`http://localhost:8000/expense/getExpense?page=${page}&pageSize=${pageSize}`, {
             headers: { "Authorization": token }
         });
-        const data = response.data;
+      
         const expenseList = document.getElementById('expenseList');
         expenseList.innerHTML = ''; // Clear existing list
 
-        data.expenses.forEach(expense => displayExpenses(expense));
+        response.data.expenses.forEach(expense => displayExpenses(expense));
 
         const paginationDiv = document.getElementById('paginateExpense');
         paginationDiv.innerHTML = ''; // Clear existing pagination

@@ -87,5 +87,5 @@ exports.login = async (req, res) => {
 
 
 function generateToken(id,name){
-    return jwt.sign({userId:id , name: name} , 'secretkey');
+    return jwt.sign({userId:id , name: name} , process.env.JWT_SECRET);
 }
