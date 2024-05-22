@@ -4,7 +4,6 @@ const Order = require('../models/order')
 exports.getStatus = async( req , res) => {
     try{
         const isPremiumUser = req.user.isPremiumUser;
-        console.log('isPremiumUser>>>>>>>>',isPremiumUser)
         res.status(200).json({status:isPremiumUser});
     }catch(error){
         console.error('Error in transaction status' , error);
@@ -21,7 +20,7 @@ exports.premiumPurchase = async (req, res) => {
         const amount = 2500;
 
         const order = await rzp.orders.create({ amount, currency: 'INR' });
-        console.log('order>>>>>>>>>>>>>>>>>>>>>>>',order)
+        
         await req.user.createOrder({ orderId: order.id, status: "PENDING" });
 
         return res.status(201).json({ order, key_id: rzp.key_id });

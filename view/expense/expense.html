@@ -9,10 +9,10 @@
 <body>
     <form id="loginForm" onsubmit="submitForm(event)">
         <label for="amount">Add expense amount : </label>
-        <input type="number" name="amount" id="amount" placeholder="Enter expense amount.." required>
+        <input type="number" name="amount" id="amount" placeholder="Enter expense amount.." required><br>
 
         <label for="description">Add Description : </label>
-        <input type="text" name="description" id="description" placeholder="Enter Description.." required>
+        <input type="text" name="description" id="description" placeholder="Enter Description.." required><br>
 
         <label for="category">Choose a Category :</label>
         <select id="category" name="category" required>
@@ -24,7 +24,7 @@
             <option value="travel">Travel</option>
             <option value="more">More..</option>
         </select><br>
-
+        
         <button type="submit">Add Expense</button>
     </form>
 
@@ -52,8 +52,16 @@
         <button id="downloadBtn">Download File</button>
     </div>
 
+    <label for="pageSize">Page Size:</label>
+    <select id="pageSize" name="pageSize" onchange="updatePageSize()">
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="7">7</option>
+    </select>
+    
     <div id="recordsDiv" style="display: none;">
-        <h3>Previous download</h3>
+        <h3>Previous downloads</h3>
         <ul id="records"></ul>
     </div>
 

@@ -3,20 +3,22 @@ const User = require('../models/user');
 const sequelize = require('../util/databse');
 
 exports.getExpense = async (req, res) => {
-    const { page = 1, limit = 5 } = req.query; // Get page and limit from query params, with defaults
+    const { pageSize =5 ,page =1} = req.query ;  
 
     try {
-        const expenses = await Expense.findAndCountAll({
+        const expenses = await Expense.findAll({
             where: { UserId: req.user.id },
-            limit: parseInt(limit), // Number of items per page
-            offset: (page - 1) * limit // Offset based on current page
+            limit:parseInt(pageSize),
+            offset: (page - 1) * parseInt(pageSize)
         });
-
+        const totalItems = await Expense.count({ 
+            where : { UserId:req.user.id }
+        })
         res.status(200).json({
-            expenses: expenses.rows,
-            currentPage: page,
-            totalItems: expenses.count,
-            totalPages: Math.ceil(expenses.count / limit),
+            expenses,
+            currentPage: parseInt(page),
+            totalItems,
+            totalPages: Math.ceil(expenses.count / parseInt(pageSize)),
         });
     } catch (error) {
         console.error('Error fetching expenses:', error);
@@ -38,12 +40,10 @@ exports.postExpense = async (req, res) => {
             transaction: t
         });
         const user = await User.findByPk(req.user.id);
-        
         const total = user.totalCost + parseInt(amount);
         await user.update({ totalCost: total } , { transaction:t });
 
         await t.commit();
-
         res.status(201).json({ expense, success: true });
         
     } catch (error) {
@@ -69,7 +69,9 @@ exports.deleteExpense = async (req, res) => {
         const user = await User.findByPk(req.user.id);
         const total = user.totalCost - currentExpense.amount;
         await user.update({ 
-            totalCost: total } , { transaction:t 
+            totalCost: total 
+        } , { 
+            transaction:t 
         });
         await t.commit();
         res.status(200).json({success:true,message:"Deleted succesfully"});

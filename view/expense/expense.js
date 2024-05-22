@@ -54,9 +54,10 @@ async function displayExpenses(expense) {
 
 
 async function fetchExpenses(page=1){
+    const pageSize= localStorage.getItem('pageSize') || 5 ;
     try{
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8000/expense/getExpense?page=${page}&limit=5`, {
+        const response = await axios.get(`http://localhost:8000/expense/getExpense?page=${page}&pageSize=${pageSize}`, {
             headers: { "Authorization": token }
         });
         const data = response.data;
@@ -65,7 +66,6 @@ async function fetchExpenses(page=1){
 
         data.expenses.forEach(expense => displayExpenses(expense));
 
-        // Display pagination
         const paginationDiv = document.getElementById('paginateExpense');
         paginationDiv.innerHTML = ''; // Clear existing pagination
 
@@ -84,17 +84,21 @@ async function fetchExpenses(page=1){
     }
 }
 
+function updatePageSize(){
+    const pageSize = document.getElementById('pageSize').value;
+    localStorage.setItem('pageSize' , pageSize)
+    fetchExpenses(1)
+
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        fetchExpenses(1)
-        displayPremiumStatus();
-        displayRecords()
-        const token = localStorage.getItem('token');
-        
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        alert('An error occurred. Please try again.');
-    }
+    
+    const savedPageSize = localStorage.getItem('pageSize') || 5;
+    document.getElementById('pageSize').value = savedPageSize;
+    fetchExpenses(1)
+    displayPremiumStatus();
+    displayRecords()
+    
 });
 
 document.getElementById('premium').onclick = async function(event) {
@@ -103,7 +107,6 @@ document.getElementById('premium').onclick = async function(event) {
         const response = await axios.get('http://localhost:8000/purchase/premiumPurchase', {
             headers: { 'Authorization': token }
         });
-        console.log('purchase response>>>', response.data);
         var options = {
             'key': response.data.key_id,
             'order_id': response.data.order.id,
@@ -138,7 +141,6 @@ document.getElementById('premium').onclick = async function(event) {
                 }, {
                     headers: { 'Authorization': token }
                 });
-                console.log('updateOrderStatus>>>>>>>>>', updateOrderStatus);
                 alert('Payment failed. Order status has been updated.');
             } catch (error) {
                 console.error('Error updating order status:', error);
@@ -178,9 +180,7 @@ async function displayPremiumStatus() {
         const statusResponse = await axios.get('http://localhost:8000/purchase/getStatus', {
             headers: { 'Authorization': token }
         });
-        console.log('statusResponse>>>>>>>>>>.',statusResponse)
         const isPremium = statusResponse.data.status;
-        console.log('isPremium>>>>>>>>>',isPremium)
         const premiumMsg = document.getElementById('premiumMsg');
         if (isPremium ) {
             document.getElementById('premium').style.display = 'none';
